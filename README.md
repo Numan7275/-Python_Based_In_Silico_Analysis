@@ -45,3 +45,53 @@ Probes are short oligonucleotide sequences used in hybridization-based technique
 ### Installation:
 ```bash
 pip install biopython pandas
+
+readme_part = """
+## 6. Results and Discussion
+
+### Reference Sequence Binding:
+The probe matched perfectly at a specific position.
+
+### Variant Sequence Result:
+- Mismatch found at **position 12**
+  - Reference base: `C`  
+  - Variant base: `T`
+
+This mismatch in the middle of the probe may significantly reduce hybridization efficiency, potentially leading to SNP detection failure.
+
+---
+
+## 7. Applications
+
+- SNP genotyping and diagnostics  
+- qPCR probe design validation  
+- Allele-specific hybridization testing  
+- Educational bioinformatics simulations
+
+---
+
+## 8. Limitations
+
+- Analyzes one SNP and one probe at a time  
+- Does not include thermodynamic modeling (e.g., Tm shifts)  
+- Only supports exact match/mismatch logic
+
+---
+
+## 9. Future Improvements
+
+- Integrate Tm (melting temperature) calculation  
+- Enable batch analysis for multiple probes/sequences  
+- Add GUI using Tkinter or Streamlit  
+- Parse real-world VCF files for population-scale SNPs
+
+---
+
+## 10. Conclusion
+
+This project demonstrates a simple and effective method to detect SNPs based on probe binding mismatches using Python. It provides a foundation for more advanced tools that incorporate thermodynamic analysis and high-throughput genomics.
+"""
+
+# Save to a file
+with open("README_part_6_to_10.md", "w") as f:
+    f.write(readme_part)
