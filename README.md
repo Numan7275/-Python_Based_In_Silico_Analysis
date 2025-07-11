@@ -1,97 +1,47 @@
-# 🧬 SNP Detection Using Probe Binding Mismatch: A Python-Based In Silico Analysis
+# SNP Probe Binding and Mismatch Detection
 
-## 📑 Table of Contents
-1. [Introduction](#1-introduction)  
-2. [Objectives](#2-objectives)  
-3. [Background](#3-background)  
-4. [Tools and Technologies](#4-tools-and-technologies)  
-5. [Methodology](#5-methodology)  
-6. [Results and Discussion](#6-results-and-discussion)  
-7. [Applications](#7-applications)  
-8. [Limitations](#8-limitations)  
-9. [Future Improvements](#9-future-improvements)  
-10. [Conclusion](#10-conclusion)  
-11. [References](#11-references)
+This Python script analyzes the binding of a DNA probe sequence to a reference DNA sequence and its SNP (Single Nucleotide Polymorphism) variant. It identifies mismatches between the probe and the SNP variant at the binding site.
 
 ---
 
-## 1. Introduction
+## Features
 
-Single Nucleotide Polymorphisms (SNPs) are the most common type of genetic variation among individuals. Detecting SNPs efficiently is vital in personalized medicine, diagnostics, and evolutionary biology. This project demonstrates how to detect SNPs using probe binding mismatch analysis via Python — a simple yet powerful in silico method.
-
----
-
-## 2. Objectives
-
-- Simulate and detect SNPs using probe mismatch logic.  
-- Implement a Python-based tool that compares a probe’s ability to bind with reference vs. SNP-containing sequences.  
-- Identify mismatch points and evaluate probe efficiency.
+- Finds the binding position of the probe on the reference DNA sequence.
+- Compares the probe binding on the SNP variant sequence.
+- Reports mismatches including their positions and the differing nucleotides.
 
 ---
 
-## 3. Background
+## Code Overview
 
-Probes are short oligonucleotide sequences used in hybridization-based techniques such as qPCR or microarrays. A SNP within a probe-binding region can reduce hybridization efficiency or cause binding failure. This feature is useful in allele-specific probe-based SNP detection.
+```python
+from Bio.Seq import Seq
 
----
+# Reference and SNP variant sequences
+reference_seq = "ATGCGTACGTTAGCTAGCTAGCGATCGATCGTTAGCTAGTCGATCGATGC"
+snp_variant_seq = "ATGCGTACGTTAGCTAGCTAGCGATCGATTGTTAGCTAGTCGATCGATGC"
+probe_seq = "AGCGATCGATCGTTAGCTAG"
 
-## 4. Tools and Technologies
+# Find binding position
+def find_binding_position(seq, probe):
+    return seq.find(probe)
 
-- Python 3.10+  
-- Biopython – for sequence handling  
-- difflib – for sequence comparison  
-- pandas – (optional) for tabular data output  
+# Compare mismatches
+def compare_binding(seq, probe, start_pos):
+    mismatches = []
+    for i in range(len(probe)):
+        if seq[start_pos + i] != probe[i]:
+            mismatches.append((i + 1, seq[start_pos + i], probe[i]))
+    return mismatches
 
-### Installation:
-```bash
-pip install biopython pandas
+# Get position
+ref_pos = find_binding_position(reference_seq, probe_seq)
 
-readme_part = """
-## 6. Results and Discussion
-
-### Reference Sequence Binding:
-The probe matched perfectly at a specific position.
-
-### Variant Sequence Result:
-- Mismatch found at **position 12**
-  - Reference base: `C`  
-  - Variant base: `T`
-
-This mismatch in the middle of the probe may significantly reduce hybridization efficiency, potentially leading to SNP detection failure.
-
----
-
-## 7. Applications
-
-- SNP genotyping and diagnostics  
-- qPCR probe design validation  
-- Allele-specific hybridization testing  
-- Educational bioinformatics simulations
-
----
-
-## 8. Limitations
-
-- Analyzes one SNP and one probe at a time  
-- Does not include thermodynamic modeling (e.g., Tm shifts)  
-- Only supports exact match/mismatch logic
-
----
-
-## 9. Future Improvements
-
-- Integrate Tm (melting temperature) calculation  
-- Enable batch analysis for multiple probes/sequences  
-- Add GUI using Tkinter or Streamlit  
-- Parse real-world VCF files for population-scale SNPs
-
----
-
-## 10. Conclusion
-
-This project demonstrates a simple and effective method to detect SNPs based on probe binding mismatches using Python. It provides a foundation for more advanced tools that incorporate thermodynamic analysis and high-throughput genomics.
-"""
-
-# Save to a file
-with open("README_part_6_to_10.md", "w") as f:
-    f.write(readme_part)
+# Evaluate mismatches
+if ref_pos != -1:
+    mismatches = compare_binding(snp_variant_seq, probe_seq, ref_pos)
+    print(f"Probe mismatch count: {len(mismatches)}")
+    for pos, actual, expected in mismatches:
+        print(f"Position {pos}: '{actual}' → '{expected}' (Mismatch)")
+else:
+    print("Probe does not bind to the reference sequence.")
